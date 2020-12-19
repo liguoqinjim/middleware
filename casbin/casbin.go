@@ -3,6 +3,7 @@ package casbin
 import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/context"
+	"log"
 
 	"github.com/casbin/casbin/v2"
 )
@@ -58,7 +59,12 @@ func (c *Casbin) Check(ctx iris.Context) bool {
 		username = Username(ctx)
 	}
 
-	ok, _ := c.enforcer.Enforce(username, ctx.Path(), ctx.Method())
+	log.Println("liguoqinjim:ctx.Path()=", ctx.Path(), ctx.Method(), username)
+	ok, err := c.enforcer.Enforce(username, ctx.Path(), ctx.Method())
+	if err != nil {
+		log.Fatalf("liguoqinjim enforce error:%v", err)
+	}
+
 	return ok
 }
 
